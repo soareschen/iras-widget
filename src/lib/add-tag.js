@@ -6,36 +6,33 @@ import { renderSignal } from 'quiver-view'
 // renderAddTagForm :: (Map String Node) -> (Map String Node) -> (Signal Pair Vdom a)
 export const renderAddTagForm = (tagIndex, autocompleteIndex) => {
   // autocompleteSignal :: Signal List String
-  const [autocompleteSignal, autocompleteSetter] = valueSignal(immutable.List())
+  const [inputTagSignal, inputTagSetter] = valueSignal('')
 
   // addTagEventSignal :: EventSignal TagNode
   const [addTagEventSignal, emitAddTag] = eventSignal()
 
   const onInputChange = ev => {
     const inputTag = ev.target.value
-    const autocompleteList = autocompleteIndex.get(inputTag)
-
-    if(autocompleteList) {
-      autocompleteSetter.setValue(autocompleteList)
-    } else {
-      autocompleteSetter.setValue(immutable.List())
-    }
+    inputTagSetter.setValue(inputTag)
   }
 
   const onFormSubmit = ev => {
     ev.preventDefault()
     const inputTag = ev.target.querySelector('#input-tag').value
-    console.log('add tag event:', ev, inputTag)
     const node = tagIndex.get(inputTag)
     if(node) emitAddTag(node)
   }
 
-  const formSpva = renderSignal(autocompleteSignal,
-    autocompleteList => {
+  const formSpva = renderSignal(inputTagSignal,
+    inputTag => {
+      const autocompleteList = autocompleteIndex.get(inputTag) || immutable.List()
+
       const suggestions = autocompleteList.map(
         node => {
           return <option value={node.get('tag')} />
         })
+
+      const addDisabled = tagIndex.has(inputTag) ? false : true
 
       const vdom =
         <form className='addTag' onSubmit={onFormSubmit}>
@@ -44,7 +41,7 @@ export const renderAddTagForm = (tagIndex, autocompleteIndex) => {
           <datalist id='autocomplete-tags'>
             { suggestions }
           </datalist>
-          <button type='submit'>Add Tag</button>
+          <button type='submit' disabled={addDisabled}>Add Tag</button>
         </form>
 
       return vdom

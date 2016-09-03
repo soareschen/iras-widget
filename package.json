@@ -13,7 +13,7 @@
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "quiver-babel": "^1.0.3",
-    "quiver-signal": "^1.1.1",
+    "quiver-signal": "^1.1.2",
     "quiver-util": "^1.2.5",
     "quiver-view": "^1.0.1",
     "react-dom": "^15.3.1",
