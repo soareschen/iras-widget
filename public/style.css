@@ -1,0 +1,18 @@
+.tags {
+  padding: 1em;
+}
+
+.tag {
+  cursor: pointer;
+  padding: 0.5em;
+  color: white;
+  background-color: #1465CC;
+}
+
+.tag-separator {
+  padding-left: 0.5em;
+}
+
+.children-tags {
+  padding-left: 1em;
+}
